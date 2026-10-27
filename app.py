@@ -42,9 +42,6 @@ if turning_points:
 previous_events = get_events_in_window(events, "North FC", current_start - 10, current_start - 1)
 current_events = get_events_in_window(events, "North FC", current_start , current_start + 9)
 
-st.write("Selected turning point:", turning_point)
-st.write("Previous events:", previous_events)
-st.write("Current events:", current_events)
 
 audience = st.radio(
     "choose viewing mode",
@@ -59,5 +56,24 @@ if st.button("Generate AI Insight"):
     st.write(received_info)
 
 
+with st.expander("View supporting match evidence"):
+
+    st.write("Selected turning point:")
+    st.json(turning_point)
+
+    st.write("Previous events:")
+    if previous_events:
+        st.dataframe(previous_events)
+    else:
+        st.info("No recorded events in the previous period.")
+
+    st.write("Current events:")
+    st.dataframe(current_events)
+
+
+
+
+north_momentum = calculate_match_momentum(events, "North FC")
+south_momentum = calculate_match_momentum(events, "South FC")
 
 
