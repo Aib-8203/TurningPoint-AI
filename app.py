@@ -13,15 +13,23 @@ st.title("TurningPoint AI")
 
 events = load_match_events("data/match_events.json")
 
-north_momentum = calculate_match_momentum(
-    events, "North FC"
+north_momentum = calculate_match_momentum(events, "North FC")
+south_momentum = calculate_match_momentum(events, "South FC")
+
+
+north_df = pd.DataFrame(north_momentum)
+south_df = pd.DataFrame(south_momentum)
+
+comparison_df = pd.merge(north_df, south_df, on="minute")
+
+st.subheader("Weighted attacking activity score")
+
+st.line_chart(
+    comparison_df,
+    x="minute",
+    y=["North FC", "South FC"], 
+    
 )
-
-df = pd.DataFrame(north_momentum)
-
-st.subheader("North FC Attacking Momentum")
-st.dataframe(df)
-st.line_chart(df, x="minute", y="score")
 
 
 turning_points = detect_turning_points(
@@ -41,6 +49,26 @@ if turning_points:
 
 previous_events = get_events_in_window(events, "North FC", current_start - 10, current_start - 1)
 current_events = get_events_in_window(events, "North FC", current_start , current_start + 9)
+
+
+north_turning_points = detect_turning_points(
+    north_momentum, threshold=5
+)
+
+south_turning_points = detect_turning_points(
+    south_momentum, threshold=5
+)
+
+
+selected_team = st.selectbox(
+    "Select team to analyse",
+    ["North FC", "South FC"]
+)
+
+if selected_team == "North FC":
+    turning_points = north_turning_points
+else:
+    turning_points = south_turning_points
 
 
 audience = st.radio(
@@ -71,9 +99,17 @@ with st.expander("View supporting match evidence"):
     st.dataframe(current_events)
 
 
+selected_team = st.selectbox(
+    "Select team to analyse",
+    ["North FC", "South FC"]
+)
+
+if selected_team == "North FC":
+    turning_points = north_turning_points
+else:
+    turning_points = south_turning_points
 
 
-north_momentum = calculate_match_momentum(events, "North FC")
-south_momentum = calculate_match_momentum(events, "South FC")
+
 
 
