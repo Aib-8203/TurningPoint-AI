@@ -1,21 +1,18 @@
 
 import os
 import json
-
-from azure.identity import DefaultAzureCredential
-from azure.ai.projects import AIProjectClient
-
+from openai import OpenAI
 
 def explain_turning_point(turning_point, previous_events, current_events, audience):
-    endpoint = os.environ["FOUNDRY_PROJECT_ENDPOINT"]
+
     model_name = os.environ["FOUNDRY_MODEL_NAME"]
 
-    project = AIProjectClient(
-        endpoint=endpoint,
-        credential=DefaultAzureCredential()
-    )
+    
+    client = OpenAI(
+    base_url=os.environ["FOUNDRY_INFERENCE_BASE_URL"],
+    api_key=os.environ["FOUNDRY_API_KEY"]
+)
 
-    client = project.get_openai_client()
 
     current_json = json.dumps(current_events)
     previous_json = json.dumps(previous_events)
@@ -63,21 +60,14 @@ def explain_turning_point(turning_point, previous_events, current_events, audien
     {instructions}
 
     Instructions:
-    - Compare attacking activity between both periods.
-    - Explain which recorded events contributed to the scores.
-    - Do not invent events, players or tactical causes.
-    - Explain uncertainties when evidence is insufficient.
-    - Keep your explanation concise.
-    - When explaining an event, reference its event_id.
-    - Only reference event IDs present in the provided data.
-    - Do not claim that a momentum shift proves a tactical change.
-    - The supplied events are filtered to the selected team.
-    - Do not make claims about the opposing team's activity.
-    - Distinguish detected changes in weighted attacking
-    activity from proven tactical or match-momentum shifts.
-    - Do not end your response with follow-up questions,
-    offers, or suggestions.
-    - Refer to time periods rather than the specific event.
+    
+   - In Analyst mode, reference supporting event IDs.
+   - In Casual Fan mode, explain events naturally
+    without mentioning event IDs or scoring formulas.
+   - Never invent events, players or tactical causes.
+   - Distinguish recorded attacking activity
+    from proven tactical momentum changes.
+
     """
   
 
