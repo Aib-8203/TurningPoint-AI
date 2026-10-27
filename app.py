@@ -11,7 +11,7 @@ from src.insight_agent import explain_turning_point
 
 st.title("TurningPoint AI")
 
-events = load_match_events("data/match_events.json")
+events = load_match_events("data/match_events_generated.json")
 
 north_momentum = calculate_match_momentum(events, "North FC")
 south_momentum = calculate_match_momentum(events, "South FC")
@@ -49,15 +49,6 @@ if selected_team == "North FC":
     selected_momentum = north_momentum
 else:
     selected_momentum = south_momentum
-
-st.subheader("South FC Debugging")
-
-st.dataframe(pd.DataFrame(south_momentum))
-
-st.write(
-    "South FC turning points:",
-    detect_turning_points(south_momentum, threshold=5)
-)
 
 turning_points = detect_turning_points(
     selected_momentum,

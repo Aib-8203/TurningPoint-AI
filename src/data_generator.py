@@ -59,6 +59,8 @@ events.sort(key=lambda event: event["minute"])
 with open("data/match_events_generated.json", "w") as file:
     json.dump(events, file, indent=4)
 
+print("Total events generated:", len(events))
+
 
 
 
