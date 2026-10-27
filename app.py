@@ -11,10 +11,39 @@ from src.insight_agent import explain_turning_point
 
 st.title("TurningPoint AI")
 
-events = load_match_events("data/match_events_generated.json")
+
+all_events = load_match_events(
+    "data/match_events_generated.json"
+)
+
+replay_minute = st.slider(
+    "Replay match through minute",
+    min_value=9,
+    max_value=89,
+    value=89,
+    step=10
+)
+
+events = [
+    event for event in all_events
+    if event["minute"] <= replay_minute
+]
+
 
 north_momentum = calculate_match_momentum(events, "North FC")
 south_momentum = calculate_match_momentum(events, "South FC")
+
+
+north_momentum = [
+    row for row in north_momentum
+    if row["minute"] + 9 <= replay_minute
+]
+
+south_momentum = [
+    row for row in south_momentum
+    if row["minute"] + 9 <= replay_minute
+]
+
 
 
 north_df = pd.DataFrame(north_momentum)
@@ -58,11 +87,23 @@ turning_points = detect_turning_points(
 
 st.subheader(f"Detected Turning Points — {selected_team}")
 
+
 if turning_points:
     st.dataframe(turning_points)
 
-    turning_point = turning_points[0]
+    selected_index = st.selectbox(
+        "Select a turning point",
+        options=range(len(turning_points)),
+        format_func=lambda i: (
+            f"Minute {turning_points[i]['minute']} "
+            f"— +{turning_points[i]['change']} activity"
+        ),
+        key=f"turning_point_{selected_team}"
+    )
+
+    turning_point = turning_points[selected_index]
     current_start = turning_point["minute"]
+
 
     previous_events = get_events_in_window(events, selected_team, current_start - 10, current_start - 1)
     current_events = get_events_in_window(events, selected_team, current_start , current_start + 9)
