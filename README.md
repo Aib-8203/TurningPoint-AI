@@ -68,9 +68,11 @@ The current dataset is small, and results depend on the chosen event weights and
 
 ## Live Demo
 
-**Streamlit App:** [Add deployment URL]
+**Streamlit App:** 
+https://turningpoint-ai-8rgjcged6cre6xx4hheedw.streamlit.app/
 
-**Demonstration Video:** [Add public video URL]
+**Demonstration Video:** 
+https://youtu.be/PBtMDT8N1yw
 
 ## Future Improvements
 
