@@ -59,14 +59,18 @@ def explain_turning_point(turning_point, previous_events, current_events, audien
     Audience instructions:
     {instructions}
 
-    Instructions:
     
-   - In Analyst mode, reference supporting event IDs.
-   - In Casual Fan mode, explain events naturally
-    without mentioning event IDs or scoring formulas.
-   - Never invent events, players or tactical causes.
-   - Distinguish recorded attacking activity
-    from proven tactical momentum changes.
+    IMPORTANT OUTPUT RULES:
+    - The selected audience is: {audience}.
+    - Generate exactly ONE explanation for this audience.
+    - Do NOT generate an explanation for the other audience.
+    - Do NOT include headings such as "Analyst mode"
+      or "Casual Fan mode".
+    - If Casual Fan is selected, use only simple,
+      engaging football language in two sentences.
+    - If Analyst is selected, provide technical
+      analysis with supporting event IDs and limitations.
+    - Return only the explanation, nothing else.
 
     """
   
